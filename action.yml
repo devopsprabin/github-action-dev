@@ -1,4 +1,4 @@
-name: "github Action"
+name: "Development github Action"
 description: "Build Docker image, deploy to a server, and send a Discord notification."
 author: "devopsprabin"
 inputs:
@@ -21,7 +21,7 @@ inputs:
     description: "SSH Port"
     required: false
     default: "22"
-  deploy_folder_path_dev:
+  deploy_folder_path:
     description: "Deployment folder path"
     required: true
   deploy_command:
@@ -79,11 +79,11 @@ runs:
         script: |
           whoami
           repo_name=$(echo "${{ github.event.repository.name }}" | tr -d '_-')
-          cd ${{ inputs.deploy_folder_path_dev }}
+          cd ${{ inputs.deploy_folder_path }}
           ls -al
           sh ${{ inputs.deploy_command }} $repo_name
           echo "Deploy Command: ${{ inputs.deploy_command }}"
-          echo "Deploy Folder: ${{ inputs.deploy_folder_path_dev }}"
+          echo "Deploy Folder: ${{ inputs.deploy_folder_path }}"
           
     - name: Notification
       uses: appleboy/discord-action@master
