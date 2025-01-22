@@ -56,7 +56,7 @@ runs:
       with:
         context: ./
         build-args: |
-          "_ENV=production"
+          "_ENV=development"
           "GIT_TOKEN=${{ inputs.github_token }}"
         tags: ghcr.io/${{ github.repository }}:${{ inputs.custom_tag_name }}
         push: true 
