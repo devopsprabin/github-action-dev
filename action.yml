@@ -37,7 +37,10 @@ inputs:
     description: "Tag for the Docker image"
     required: false
     default: "dev"
-
+  build_args:
+    description: "Additional build arguments"
+    required: false
+    default: "GIT_TOKEN=${{ inputs.github_token }} _ENV=development"
 runs:
   using: "composite"
   steps:
@@ -55,9 +58,7 @@ runs:
       uses: docker/build-push-action@v6
       with:
         context: ./
-        build-args: |
-          "_ENV=development"
-          "GIT_TOKEN=${{ inputs.github_token }}"
+        build-args: ${{ inputs.build_args }}
         tags: ghcr.io/${{ github.repository }}:${{ inputs.custom_tag_name }}
         push: true 
     - name: Decode Base64 SSH Private Key
