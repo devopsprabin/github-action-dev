@@ -38,9 +38,11 @@ inputs:
     required: false
     default: "dev"
   build_args:
-    description: "Additional build arguments"
+    description: "Additional build arguments (YAML list)"
     required: false
-    default: "GIT_TOKEN=${{ inputs.github_token }}, _ENV=development"
+    default: |
+      GIT_TOKEN=${{ inputs.github_token }}
+      _ENV=development
 runs:
   using: "composite"
   steps:
