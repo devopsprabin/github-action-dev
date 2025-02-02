@@ -42,6 +42,11 @@ inputs:
     required: false
     default: |
       _ENV=development
+  build_secrets:
+    description: "Additional build secret (YAML list)"
+    required: false
+    default: |
+      envfile=_envfile
 runs:
   using: "composite"
   steps:
@@ -62,6 +67,7 @@ runs:
         build-args: ${{ inputs.build_args }}
         tags: ghcr.io/${{ github.repository }}:${{ inputs.custom_tag_name }}
         push: true 
+        secrets: ${{ inputs.build_secrets }}
     - name: Decode Base64 SSH Private Key
       id: decode_ssh_key
       shell: bash
