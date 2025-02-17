@@ -53,6 +53,9 @@ inputs:
     default: "./"
 runs:
   using: "composite"
+  strategy:
+    matrix:
+      context: ${{ fromJson(inputs.context_folders) }}
   steps:
     - name: Checkout code
       uses: actions/checkout@v4.2.2
@@ -63,9 +66,7 @@ runs:
         registry: ghcr.io
         username: ${{ inputs.github_actor }}
         password: ${{ inputs.github_token }}
-    strategy:
-      matrix:
-        context: ${{ fromJson(inputs.context_folders) }}
+
     - name: Build and Push to GitHub Container Registry
       uses: docker/build-push-action@v6
       with:
