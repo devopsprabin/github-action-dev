@@ -10,7 +10,8 @@ inputs:
     required: true
   ssh_enable:
     description: "enable SSH"
-    required: true
+    required: false
+    default: "false"
   ssh_host:
     description: "Primary SSH Host"
     required: true
