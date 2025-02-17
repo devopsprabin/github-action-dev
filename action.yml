@@ -47,6 +47,10 @@ inputs:
     required: false
     default: |
       envfile=_envfile
+  context_folders:
+    description: "List of Dockerfile context folders (comma-separated) eg: go-21,php8-1"
+    required: false
+    default: "./"
 runs:
   using: "composite"
   steps:
@@ -59,11 +63,13 @@ runs:
         registry: ghcr.io
         username: ${{ inputs.github_actor }}
         password: ${{ inputs.github_token }}
-
+    strategy:
+      matrix:
+        context: ${{ fromJson(inputs.context_folders) }}
     - name: Build and Push to GitHub Container Registry
       uses: docker/build-push-action@v6
       with:
-        context: ./
+        context: ./${{ matrix.context }}
         build-args: ${{ inputs.build_args }}
         tags: ghcr.io/${{ github.repository }}:${{ inputs.custom_tag_name }}
         push: true 
