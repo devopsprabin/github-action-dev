@@ -59,6 +59,10 @@ inputs:
     description: "Subdirectory within the repository"
     required: false
     default: ""
+  dockerfile_name: 
+    description: "dockerfile name"
+    required: false
+    default: "Dockerfile"
 runs:
   using: "composite"
   steps:
@@ -77,6 +81,7 @@ runs:
       with:
         context: ./${{ inputs.subdirectory }}
         build-args: ${{ inputs.build_args }}
+        file: ${{ inputs.dockerfile_name }}
         # tags: ghcr.io/${{ github.repository }}:${{ inputs.custom_tag_name }}
         tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.subdirectory != '' && inputs.subdirectory || github.event.repository.name }}:${{ inputs.custom_tag_name }}
         push: true 
