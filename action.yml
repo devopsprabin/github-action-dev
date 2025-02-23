@@ -73,11 +73,12 @@ runs:
       with:
         context: ./${{ inputs.subdirectory }}
         build-args: ${{ inputs.build_args }}
-        tags: ghcr.io/${{ github.repository }}:${{ inputs.custom_tag_name }}
+        # tags: ghcr.io/${{ github.repository }}:${{ inputs.custom_tag_name }}
+        tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.subdirectory != '' && inputs.subdirectory || github.event.repository.name }}:${{ inputs.custom_tag_name }}
         push: true 
         secrets: ${{ inputs.build_secrets }}
     - name: Decode Base64 SSH Private Key
-      if: ${{ inputs.ssh_enable }} == 'true'
+      if: ${{ inputs.ssh_enable == 'true' }}
       id: decode_ssh_key
       shell: bash
       run: |
@@ -87,7 +88,7 @@ runs:
         echo "EOF" >> $GITHUB_ENV
         
     - name: Deploy command
-      if: ${{ inputs.ssh_enable }} == 'true'
+      if: ${{ inputs.ssh_enable == 'true' }}
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ inputs.ssh_host }}
