@@ -11,7 +11,7 @@ inputs:
   ssh_enable:
     description: "enable SSH"
     required: false
-    default: "false"
+    default: "true"
   ssh_host:
     description: "Primary SSH Host"
     required: true
@@ -31,6 +31,10 @@ inputs:
   deploy_command:
     description: "Deployment command"
     required: true
+  discord_enable:
+    description: "enable discord"
+    required: false
+    default: "true"
   discord_webhook_id:
     description: "Discord Webhook ID"
     required: true
@@ -105,6 +109,7 @@ runs:
           echo "Deploy Folder: ${{ inputs.deploy_folder_path }}"
           
     - name: Notification
+      if: ${{ inputs.discord_enable == 'true' }}
       uses: appleboy/discord-action@master
       with:
         webhook_id: ${{ inputs.discord_webhook_id }}
